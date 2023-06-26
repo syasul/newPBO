@@ -4,6 +4,11 @@
  */
 package View;
 
+import Config.Koneksi;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  *
  * @author User
@@ -13,8 +18,66 @@ public class FormLogin extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
+
+    
+    
+public ResultSet res;
+public Statement stat;
+
+private void login(){
+    try
+    {
+        if(txt_username.getText().equals("")||txt_pass.getText().equals(""))
+        {
+            txt_username.setText("");
+            txt_pass.setText("");
+            txt_username.requestFocus();
+        }
+        else
+        {
+            stat = Koneksi.connection().createStatement();
+            String a = "select * from tb_user where username='"+txt_username.getText()+"' && password = '"+ txt_pass.getText()+"'";
+            
+            res = stat.executeQuery(a);
+            if(res.next())
+            {
+                kotakpesan.showMessageDialog(rootPane, "selamat... anda berhasil login");
+                new dashboard().show();
+                this.dispose();
+            }
+            else
+            {
+                kotakpesan.showMessageDialog(rootPane, "maaf anda gagal login");
+                txt_username.setText("");
+                txt_pass.setText("");
+                txt_username.requestFocus();
+            }
+        }
+    }
+    catch(SQLException e)
+    {
+        kotakpesan.showMessageDialog(rootPane, "gagal koneksi login" + e.getMessage());
+}
+}
+    /**
+     * Creates new form FormLogin
+     */
     public FormLogin() {
         initComponents();
+        Koneksi.connection();
+        this.eye2.setVisible(false);
+    }
+    
+    public FormLogin() {
+        initComponents();
+        Koneksi.connection();
+        this.eye2.setVisible(false);
+    }
+
+    void bersih (){
+            txt_username.setText("Username");
+            txt_pass.setText("********");
+       
     }
 
     /**
@@ -36,7 +99,7 @@ public class FormLogin extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         eye1 = new javax.swing.JLabel();
         eye2 = new javax.swing.JLabel();
-        password = new javax.swing.JPasswordField();
+        txt_pass = new javax.swing.JPasswordField();
         lupa = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -96,20 +159,20 @@ public class FormLogin extends javax.swing.JFrame {
             }
         });
 
-        password.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        password.setText("doni12345");
-        password.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        password.addFocusListener(new java.awt.event.FocusAdapter() {
+        txt_pass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txt_pass.setText("doni12345");
+        txt_pass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_pass.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                passwordFocusGained(evt);
+                txt_passFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                passwordFocusLost(evt);
+                txt_passFocusLost(evt);
             }
         });
-        password.addActionListener(new java.awt.event.ActionListener() {
+        txt_pass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordActionPerformed(evt);
+                txt_passActionPerformed(evt);
             }
         });
 
@@ -143,7 +206,7 @@ public class FormLogin extends javax.swing.JFrame {
                                             .addComponent(jLabel5)))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(password))
+                                        .addComponent(txt_pass))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -188,7 +251,7 @@ public class FormLogin extends javax.swing.JFrame {
                                 .addGap(24, 24, 24)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
-                                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txt_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
                         .addComponent(bt_login, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -234,8 +297,11 @@ public class FormLogin extends javax.swing.JFrame {
 
     private void bt_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_loginActionPerformed
         this.dispose();
+        
         FormUser FormUs = new FormUser();  
-        FormUs.setVisible(true);
+        String Username = txt_pass.getText();
+        new FormUser(Username).setVisible(true);
+        setVisible(false);
     }//GEN-LAST:event_bt_loginActionPerformed
 
     private void eye1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eye1MousePressed
@@ -246,17 +312,17 @@ public class FormLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_eye2MousePressed
 
-    private void passwordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordFocusGained
+    private void txt_passFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_passFocusGained
         // TODO add your handling code here:
-    }//GEN-LAST:event_passwordFocusGained
+    }//GEN-LAST:event_txt_passFocusGained
 
-    private void passwordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordFocusLost
+    private void txt_passFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_passFocusLost
         // TODO add your handling code here:
-    }//GEN-LAST:event_passwordFocusLost
+    }//GEN-LAST:event_txt_passFocusLost
 
-    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
+    private void txt_passActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_passActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_passwordActionPerformed
+    }//GEN-LAST:event_txt_passActionPerformed
 
     private void lupaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lupaActionPerformed
         this.dispose();
@@ -318,7 +384,7 @@ public class FormLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton lupa;
-    private javax.swing.JPasswordField password;
+    private javax.swing.JPasswordField txt_pass;
     private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }
