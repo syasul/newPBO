@@ -41,13 +41,17 @@ private void login(){
             res = stat.executeQuery(a);
             if(res.next())
             {
-                kotakpesan.showMessageDialog(rootPane, "selamat... anda berhasil login");
-                new dashboard().show();
                 this.dispose();
+        
+                FormUser FormUs = new FormUser();  
+                String Username = txt_pass.getText();
+                String a = "SELECT column1, column2 FROM your_table WHERE condition;";
+                new FormUser(Username).setVisible(true);
+                setVisible(false);
             }
             else
             {
-                kotakpesan.showMessageDialog(rootPane, "maaf anda gagal login");
+                System.out.println("Anda gagal Login");
                 txt_username.setText("");
                 txt_pass.setText("");
                 txt_username.requestFocus();
@@ -56,7 +60,7 @@ private void login(){
     }
     catch(SQLException e)
     {
-        kotakpesan.showMessageDialog(rootPane, "gagal koneksi login" + e.getMessage());
+        System.out.println(e.getMessage());
 }
 }
     /**
@@ -75,8 +79,8 @@ private void login(){
     }
 
     void bersih (){
-            txt_username.setText("Username");
-            txt_pass.setText("********");
+            txt_username.setText("");
+            txt_pass.setText();
        
     }
 
@@ -296,12 +300,7 @@ private void login(){
     }//GEN-LAST:event_txt_usernameActionPerformed
 
     private void bt_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_loginActionPerformed
-        this.dispose();
-        
-        FormUser FormUs = new FormUser();  
-        String Username = txt_pass.getText();
-        new FormUser(Username).setVisible(true);
-        setVisible(false);
+        login();
     }//GEN-LAST:event_bt_loginActionPerformed
 
     private void eye1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eye1MousePressed
