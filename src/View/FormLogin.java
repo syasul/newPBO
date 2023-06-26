@@ -43,10 +43,9 @@ private void login(){
             {
                 this.dispose();
         
-                FormUser FormUs = new FormUser();  
-                String Username = txt_pass.getText();
-                String a = "SELECT column1, column2 FROM your_table WHERE condition;";
-                new FormUser(Username).setVisible(true);
+                
+                String pass = "SELECT nama FROM tb_user WHERE username ="+txt_username.getText()+"";
+                new FormUser(pass).setVisible(true);
                 setVisible(false);
             }
             else
@@ -72,15 +71,11 @@ private void login(){
         this.eye2.setVisible(false);
     }
     
-    public FormLogin() {
-        initComponents();
-        Koneksi.connection();
-        this.eye2.setVisible(false);
-    }
+    
 
     void bersih (){
             txt_username.setText("");
-            txt_pass.setText();
+            txt_pass.setText("");
        
     }
 
